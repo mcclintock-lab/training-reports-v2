@@ -22,13 +22,6 @@ class ArrayFishingValueTab extends ReportTab
         SANCTUARY_ID
       ).float('PERCENT', 0)
 
-    aquacultureAreas = @getChildren AQUACULTURE_ID
-    if aquacultureAreas.length
-      aquaculturePercent = @recordSet(
-        'FishingValue', 
-        'FishingValue', 
-        AQUACULTURE_ID
-      ).float('PERCENT', 0)
 
     moorings = @getChildren MOORING_ID
     if moorings.length
@@ -38,13 +31,6 @@ class ArrayFishingValueTab extends ReportTab
         MOORING_ID
       ).float('PERCENT', 2)
 
-    fishingAreas = @getChildren FISHING_PRIORITY_AREA_ID
-    if fishingAreas.length
-      fishingAreaPercent = @recordSet(
-        'FishingPriorityArea', 
-        'FishingPriorityArea', 
-        FISHING_PRIORITY_AREA_ID
-      ).float('PERCENT', 0)
 
     noNetZones = @getChildren NO_NET_ZONES_ID
     if noNetZones.length
@@ -67,15 +53,6 @@ class ArrayFishingValueTab extends ReportTab
       numMoorings: moorings.length
       moorings: moorings.length > 0
       mooringsPlural: moorings.length > 1
-      fishingAreaPercent: fishingAreaPercent
-      numFishingAreas: fishingAreas.length
-      fishingAreas: fishingAreas.length > 0
-      fishingAreasPlural: fishingAreas.length > 1
-
-      aquacultureAreaPercent: aquaculturePercent
-      numAquacultureAreas: aquacultureAreas.length
-      aquacultureAreas: aquacultureAreas.length > 0
-      aquacultureAreasPlural: aquacultureAreas.length > 1
 
       noNetZonesPercent: noNetZonesPercent
       numNoNetZones: noNetZones.length

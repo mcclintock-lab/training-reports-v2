@@ -21,23 +21,12 @@ class ArrayHabitatTab extends ReportTab
         if parseFloat(row.Percent) >= 33
           row.meetsGoal = true
 
-    aquacultureAreas = []
 
-    """
-    @getChildren AQUACULTURE_ID
-    if aquacultureAreas.length
-      aquaculture = @recordSet('BarbudaHabitat', 'Habitats', AQUACULTURE_ID)
-        .toArray()
-    """
     moorings = @getChildren MOORING_ID
     if moorings.length
       mooringData = @recordSet('BarbudaHabitat', 'Habitats', MOORING_ID)
         .toArray()
 
-    fishingAreas = @getChildren FISHING_PRIORITY_AREA_ID
-    if fishingAreas.length
-      fishingAreaData = @recordSet('BarbudaHabitat', 'Habitats', 
-        FISHING_PRIORITY_AREA_ID).toArray()
 
     noNetZones = @getChildren NO_NET_ZONES_ID
     if noNetZones.length
@@ -58,11 +47,6 @@ class ArrayHabitatTab extends ReportTab
       numMoorings: moorings.length
       mooringData: mooringData
       mooringPlural: moorings.length > 1
-
-      fishingAreas: fishingAreas.length > 0
-      numFishingAreas: fishingAreas.length
-      fishingAreaData: fishingAreaData
-      fishingAreaPlural: fishingAreas.length > 1
 
       hasNoNetZones: noNetZones.length > 0
       numNoNetZones: noNetZones.length
