@@ -1,4 +1,4 @@
-GenericAttributesTab = require '../node_modules/seasketch-reporting-api/scripts/genericAttributesTab.coffee'
+GenericAttributesTab = require '../../lib/scripts/genericAttributesTab.coffee'
 
 window.app.registerReport (report) ->
   report.tabs [GenericAttributesTab]
