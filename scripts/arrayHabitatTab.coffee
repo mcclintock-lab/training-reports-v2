@@ -12,6 +12,7 @@ class ArrayHabitatTab extends ReportTab
   timeout: 240000
   
   render: () ->
+
     sanctuaries = @getChildren SANCTUARY_ID
     if sanctuaries.length
       sanctuary = @recordSet('BarbudaHabitat', 'Habitats', SANCTUARY_ID)
@@ -20,11 +21,14 @@ class ArrayHabitatTab extends ReportTab
         if parseFloat(row.Percent) >= 33
           row.meetsGoal = true
 
-    aquacultureAreas = @getChildren AQUACULTURE_ID
+    aquacultureAreas = []
+
+    """
+    @getChildren AQUACULTURE_ID
     if aquacultureAreas.length
       aquaculture = @recordSet('BarbudaHabitat', 'Habitats', AQUACULTURE_ID)
         .toArray()
-
+    """
     moorings = @getChildren MOORING_ID
     if moorings.length
       mooringData = @recordSet('BarbudaHabitat', 'Habitats', MOORING_ID)
@@ -49,10 +53,7 @@ class ArrayHabitatTab extends ReportTab
       sanctuaries: sanctuaries.length > 0
       sanctuaryHabitat: sanctuary
       sanctuaryPlural: sanctuaries.length > 1
-      numAquaculture: aquacultureAreas.length
-      aquacultureAreas: aquacultureAreas.length > 0
-      aquaPlural: aquacultureAreas.length > 1
-      aquacultureHabitat: aquaculture
+      
       moorings: moorings.length > 0
       numMoorings: moorings.length
       mooringData: mooringData

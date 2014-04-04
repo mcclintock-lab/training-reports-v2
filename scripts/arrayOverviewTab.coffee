@@ -20,18 +20,14 @@ class ArrayOverviewTab extends ReportTab
   timeout: 120000
 
   render: () ->
-    #OCEAN_AREA = @recordSet('Diameter', 'Diameter').float('OCEAN_AREA')
-    #LAGOON_AREA = @recordSet('Diameter', 'Diameter').float('LAGOON_AREA')
-    #OCEAN_PERCENT = (OCEAN_AREA / TOTAL_AREA) * 100.0
-    #LAGOON_PERCENT = (LAGOON_AREA / TOTAL_LAGOON_AREA) * 100.0
+
     sanctuaries = []
     aquacultureAreas = []
     moorings = []
     noNetZones = []
     fishingAreas = []
 
-    sanctuaries = _.filter @children, (c) -> 
-      c.get('sketchclass') is SANCTUARY_ID
+    sanctuaries = @getChildren SANCTUARY_ID
     numSanctuaries = sanctuaries.length
     if numSanctuaries > 0
       sanctuaryOceanArea = @recordSet(
@@ -60,8 +56,7 @@ class ArrayOverviewTab extends ReportTab
       sanctuaryLagoonArea = 0
       sanctuaryLagoonPercent = 0.0
 
-    aquacultureAreas = _.filter @children, (c) -> 
-      c.get('sketchclass') is AQUACULTURE_ID
+    aquacultureAreas = @getChildren AQUACULTURE_ID
     numAquacultureAreas = aquacultureAreas.length
     if numAquacultureAreas > 0
       aquacultureOceanArea = @recordSet(
@@ -90,8 +85,7 @@ class ArrayOverviewTab extends ReportTab
       aquacultureLagoonArea = 0
       aquacultureLagoonPercent = 0.0
 
-    moorings =  _.filter @children, (c) -> 
-      c.get('sketchclass') is MOORING_ID
+    moorings =  @getChildren MOORING_ID
     numMoorings = moorings.length
     if numMoorings > 0
       mooringsOceanArea = @recordSet(
@@ -120,8 +114,7 @@ class ArrayOverviewTab extends ReportTab
       mooringsLagoonArea = 0
       mooringsLagoonPercent = 0.0
 
-    noNetZones = _.filter @children, (c) -> 
-      c.get('sketchclass') is NO_NET_ZONES_ID
+    noNetZones = @getChildren NO_NET_ZONES_ID
     numNoNetZones = noNetZones.length
     if numNoNetZones > 0
       noNetZonesOceanArea = @recordSet(
@@ -150,42 +143,12 @@ class ArrayOverviewTab extends ReportTab
       noNetZonesLagoonArea = 0
       noNetZonesLagoonPercent = 0.0
 
-    fishingAreas = _.filter @children, (c) -> 
-      c.get('sketchclass') is FISHING_PRIORITY_AREA_ID
 
-    numFishingAreas = fishingAreas.length
-    if numFishingAreas > 0
-      fishingAreasOceanArea = @recordSet(
-        'Diameter', 
-        'Diameter', 
-        FISHING_PRIORITY_AREA_ID
-      ).float('OCEAN_AREA', 0)
-      fishingAreasLagoonArea = @recordSet(
-        'Diameter', 
-        'Diameter', 
-        FISHING_PRIORITY_AREA_ID
-      ).float('LAGOON_AREA', 0)
-      fishingAreasOceanPercent = @recordSet(
-        'Diameter', 
-        'Diameter', 
-        FISHING_PRIORITY_AREA_ID
-      ).float('OCEAN_PERCENT', 0)
-      fishingAreasLagoonPercent = @recordSet(
-        'Diameter', 
-        'Diameter', 
-        FISHING_PRIORITY_AREA_ID
-      ).float('LAGOON_PERCENT', 0)
-    else
-      fishingAreasOceanArea = 0
-      fishingAreasOceanPercent = 0.0
-      fishingAreasLagoonArea = 0
-      fishingAreasLagoonPercent = 0.0
-
-    numTotalZones = numSanctuaries+numNoNetZones+numAquacultureAreas+numMoorings+numFishingAreas
-    sumOceanArea = sanctuaryOceanArea+noNetZonesOceanArea+aquacultureOceanArea+mooringsOceanArea+fishingAreasOceanArea
-    sumOceanPercent = sanctuaryOceanPercent+noNetZonesOceanPercent+aquacultureOceanPercent+mooringsOceanPercent+fishingAreasOceanPercent
-    sumLagoonArea = sanctuaryLagoonArea+noNetZonesLagoonArea+aquacultureLagoonArea+mooringsLagoonArea+fishingAreasLagoonArea
-    sumLagoonPercent = sanctuaryLagoonPercent+noNetZonesLagoonPercent+aquacultureLagoonPercent+mooringsLagoonPercent+fishingAreasLagoonPercent
+    numTotalZones = numSanctuaries+numNoNetZones+numAquacultureAreas+numMoorings
+    sumOceanArea = sanctuaryOceanArea+noNetZonesOceanArea+aquacultureOceanArea+mooringsOceanArea
+    sumOceanPercent = sanctuaryOceanPercent+noNetZonesOceanPercent+aquacultureOceanPercent+mooringsOceanPercent
+    sumLagoonArea = sanctuaryLagoonArea+noNetZonesLagoonArea+aquacultureLagoonArea+mooringsLagoonArea
+    sumLagoonPercent = sanctuaryLagoonPercent+noNetZonesLagoonPercent+aquacultureLagoonPercent+mooringsLagoonPercent
     hasSketches = numTotalZones > 0
 
     context =
@@ -226,14 +189,7 @@ class ArrayOverviewTab extends ReportTab
       mooringsOceanArea: round(mooringsOceanArea, 1)
       mooringsLagoonArea: round(mooringsLagoonArea, 2)
       mooringsLagoonPercent: round(mooringsLagoonPercent, 1)
-      
-      numFishingAreas: fishingAreas.length
-      hasFishingAreas: fishingAreas.length > 0
-      fishingAreasPlural: fishingAreas.length > 1
-      fishingAreasOceanPercent: round(fishingAreasOceanPercent, 2)
-      fishingAreasOceanArea: round(fishingAreasOceanArea, 1)
-      fishingAreasLagoonArea: round(fishingAreasLagoonArea, 2)
-      fishingAreasLagoonPercent: round(fishingAreasLagoonPercent, 1)
+
 
       hasSketches: hasSketches
       sketchesPlural: numTotalZones > 1
