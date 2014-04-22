@@ -25,6 +25,7 @@ class OverviewTab extends ReportTab
   timeout: 60000
   #  renderMinimumWidth: true
   render: () ->
+
     MIN_DIAM = @recordSet('Diameter', 'Diameter').float('MIN_DIAM')
     SQ_MILES = @recordSet('Diameter', 'Diameter').float('SQ_MILES')
     PERCENT = (SQ_MILES / TOTAL_AREA) * 100.0

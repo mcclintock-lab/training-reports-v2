@@ -27,6 +27,7 @@ class ArrayOverviewTab extends ReportTab
     noNetZones = []
     fishingAreas = []
 
+
     sanctuaries = @getChildren SANCTUARY_ID
     numSanctuaries = sanctuaries.length
     if numSanctuaries > 0

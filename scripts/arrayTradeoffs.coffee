@@ -17,6 +17,8 @@ class ArrayTradeoffsTab extends ReportTab
 
 
   render: () ->
+      
+    tradeoff_data = @recordSet('TradeoffsPropId', 'TradeoffsPropId').toArray()
     context =
       sketch: @model.forTemplate()
       sketchClass: @sketchClass.forTemplate()
@@ -25,7 +27,6 @@ class ArrayTradeoffsTab extends ReportTab
     @$el.html @template.render(context, partials)
 
     if window.d3
-      tradeoff_data = @recordSet('TradeoffsPropId', 'TradeoffsPropId').toArray()
 
       h = 380
       w = 380
@@ -56,7 +57,7 @@ class ArrayTradeoffsTab extends ReportTab
         .text("data")
 
       mychart.pointsSelect()
-        .on "mouseover", (d) -> return tooltip.style("visibility", "visible").html("<ul><strong>Proposal: "+d.PROPOSAL+"</strong><li> Fishing value: "+d.FISH_VAL+"</li><li> Conservation value: "+d.ECO_VAL+"</li></ul>")
+        .on "mouseover", (d) -> return tooltip.style("visibility", "visible").html("<ul><strong>Proposal: "+window.app.sketches.get(d.PROPOSAL).attributes.name+"</strong><li> Fishing value: "+d.FISH_VAL+"</li><li> Conservation value: "+d.ECO_VAL+"</li></ul>")
 
       mychart.pointsSelect()
         .on "mousemove", (d) -> return tooltip.style("top", (event.pageY-10)+"px").style("left",(calc_ttip(event.pageX, d, tooltip))+"px")
@@ -65,7 +66,7 @@ class ArrayTradeoffsTab extends ReportTab
         .on "mouseout", (d) -> return tooltip.style("visibility", "hidden")
 
       mychart.labelsSelect()
-        .on "mouseover", (d) -> return tooltip.style("visibility", "visible").html("<ul><strong>Proposal: "+d.PROPOSAL+"</strong><li> Fishing value: "+d.FISH_VAL+"</li><li> Conservation value: "+d.ECO_VAL+"</li></ul>")
+        .on "mouseover", (d) -> return tooltip.style("visibility", "visible").html("<ul><strong>Proposal: "+window.app.sketches.get(d.PROPOSAL).attributes.name+"</strong><li> Fishing value: "+d.FISH_VAL+"</li><li> Conservation value: "+d.ECO_VAL+"</li></ul>")
 
       mychart.labelsSelect()
         .on "mousemove", (d) -> return tooltip.style("top", (event.pageY-10)+"px").style("left",(calc_ttip(event.pageX, d, tooltip))+"px")
@@ -215,7 +216,7 @@ class ArrayTradeoffsTab extends ReportTab
                 return margin.left+20)
              .attr("y", (d,i) ->
                 margin.top+height+axispos.xtitle+((i+1)*30))
-             .text((d) -> return d.PROPOSAL)
+             .text((d) -> return window.app.sketches.get(d.PROPOSAL).attributes.name)
 
         # y-axis
         yaxis = g.append("g").attr("class", "y axis")
@@ -251,7 +252,7 @@ class ArrayTradeoffsTab extends ReportTab
                 .data(data)
                 .enter()
                 .append("text")
-                .text((d)-> return d.PROPOSAL)
+                .text((d)-> return window.app.sketches.get(d.PROPOSAL).attributes.name)
                 .attr("x", (d,i) ->
                   xpos = xscale(x[i])
                   string_end = xpos+this.getComputedTextLength()
@@ -264,7 +265,6 @@ class ArrayTradeoffsTab extends ReportTab
                   return ypos+10 if (ypos < 50)
                   return ypos-5
                   )
-
 
 
         points = g.append("g").attr("id", "points")
