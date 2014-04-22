@@ -217,7 +217,6 @@ class ArrayTradeoffsTab extends ReportTab
              .attr("y", (d,i) ->
                 margin.top+height+axispos.xtitle+((i+1)*30))
              .text((d) -> return window.app.sketches.get(d.PROPOSAL).attributes.name)
-
         # y-axis
         yaxis = g.append("g").attr("class", "y axis")
         yaxis.selectAll("empty")
@@ -257,6 +256,8 @@ class ArrayTradeoffsTab extends ReportTab
                   xpos = xscale(x[i])
                   string_end = xpos+this.getComputedTextLength()
                   overlap_xstart = xpos-(this.getComputedTextLength()+5)
+                  if overlap_xstart < 50
+                    overlap_xstart = 50
                   return overlap_xstart if string_end > width
                   return xpos+5
                   )

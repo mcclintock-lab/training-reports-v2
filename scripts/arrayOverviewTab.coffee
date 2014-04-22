@@ -146,10 +146,10 @@ class ArrayOverviewTab extends ReportTab
 
 
     numTotalZones = numSanctuaries+numNoNetZones+numAquacultureAreas+numMoorings
-    sumOceanArea = sanctuaryOceanArea+noNetZonesOceanArea+aquacultureOceanArea+mooringsOceanArea
-    sumOceanPercent = sanctuaryOceanPercent+noNetZonesOceanPercent+aquacultureOceanPercent+mooringsOceanPercent
-    sumLagoonArea = sanctuaryLagoonArea+noNetZonesLagoonArea+aquacultureLagoonArea+mooringsLagoonArea
-    sumLagoonPercent = sanctuaryLagoonPercent+noNetZonesLagoonPercent+aquacultureLagoonPercent+mooringsLagoonPercent
+    sumOceanArea = round(sanctuaryOceanArea+noNetZonesOceanArea+aquacultureOceanArea+mooringsOceanArea, 1)
+    sumOceanPercent = round(sanctuaryOceanPercent+noNetZonesOceanPercent+aquacultureOceanPercent+mooringsOceanPercent,0)
+    sumLagoonArea = round(sanctuaryLagoonArea+noNetZonesLagoonArea+aquacultureLagoonArea+mooringsLagoonArea, 1)
+    sumLagoonPercent = round(sanctuaryLagoonPercent+noNetZonesLagoonPercent+aquacultureLagoonPercent+mooringsLagoonPercent, 0)
     hasSketches = numTotalZones > 0
 
     context =
