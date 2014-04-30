@@ -50,10 +50,11 @@ class HabitatTab extends ReportTab
           min_q = quantiles[i - 1] or "Q0" # quantiles[i]
           quantile_desc = quantile_range[min_q]
           break
+          
       @$('.scenarioResults').html """
         The average Marxan score for this zone is <strong>#{data.SCORE}</strong>, placing it in 
         the <strong>#{quantile_desc}</strong> quantile range <strong>(#{min_q.replace('Q', '')}% - #{max_q.replace('Q', '')}%)</strong> 
-        for this sub-region. All Marxan planning units for the sub-region have been ranked by sum solution 
+        for this region. All Marxan planning units for the region have been ranked by sum solution 
         score and divided into five quantiles of equal proportion.
       """
 
