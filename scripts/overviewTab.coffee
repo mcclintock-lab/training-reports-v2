@@ -34,7 +34,8 @@ class OverviewTab extends ReportTab
     
     skid = @model.getAttribute('SC_ID')
     isNoNetZone = (@sketchClass.id is NO_NET_ZONES_ID)
-    renderMinimumWidth = (!isNoNetZone)
+    isMooringArea = (@sketchClass.id is MOORING_ID)
+    renderMinimumWidth = (!isNoNetZone and !isMooringArea)
     context =
       sketch: @model.forTemplate()
       sketchClass: @sketchClass.forTemplate()
@@ -50,6 +51,7 @@ class OverviewTab extends ReportTab
       renderMinimumWidth: renderMinimumWidth
       PERCENT: round(PERCENT, 0)
       isNoNetZone: isNoNetZone
+      isMooringArea: isMooringArea
     
     @$el.html @template.render(context, partials)
     if renderMinimumWidth

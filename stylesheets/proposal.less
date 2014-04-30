@@ -4,7 +4,65 @@
   float:right;
   margin-right:10px;
 }
+.habitat .viz {
+  position:relative;
+  margin-left: 20px;
+  margin-top: 20px;
+  p {
+    padding-top:35px !important;
+    width:100%;
+    text-align:center;
+  }
 
+  div.score {
+    position:absolute;
+    &:before {
+      content:'▼';
+      left:-10px;
+      top:-17px;
+      font-size:18px;
+      position:relative;
+    }
+  }
+
+  svg {
+    font: 10px sans-serif;
+  }
+
+  .axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .bar {
+    fill: steelblue;
+  }
+
+
+
+  .score {
+    font-size:16px
+  }
+
+  .legends {
+    margin-top:5px;
+    margin-left:40px;
+  }
+  .legend {
+    margin-right:10px;
+    float:left;
+    font-size:10px;
+    span {
+      margin:10px 3px;
+      display:inline-block;
+      width:10px;
+      height:10px;
+      vertical-align:middle;
+    }
+  }
+
+}
 .habitat [data-toggle-node]{
   top:8px;
 }

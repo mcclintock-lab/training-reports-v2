@@ -19,3 +19,14 @@
     <a href="#" data-toggle-node="533ddf86a498867c56c6c830">show habitats layer</a>
   </p>
 </div>
+<div class="reportSection">
+  <h4>Marxan Analysis</h4>
+  <select class="chosen" width="400px">
+    {{#marxanAnalyses}}
+    <option value="{{.}}">Scenario {{.}}</option>
+    {{/marxanAnalyses}}
+  </select>
+  <p class="scenarioResults"></p>
+  <div class="viz"></div>
+  <p class="scenarioDescription"></p>
+</div>

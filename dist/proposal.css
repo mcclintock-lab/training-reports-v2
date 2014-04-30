@@ -366,6 +366,57 @@
   float: right;
   margin-right: 10px;
 }
+.habitat .viz {
+  position: relative;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+.habitat .viz p {
+  padding-top: 35px !important;
+  width: 100%;
+  text-align: center;
+}
+.habitat .viz div.score {
+  position: absolute;
+}
+.habitat .viz div.score:before {
+  content: '▼';
+  left: -10px;
+  top: -17px;
+  font-size: 18px;
+  position: relative;
+}
+.habitat .viz svg {
+  font: 10px sans-serif;
+}
+.habitat .viz .axis path,
+.habitat .viz .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.habitat .viz .bar {
+  fill: steelblue;
+}
+.habitat .viz .score {
+  font-size: 16px;
+}
+.habitat .viz .legends {
+  margin-top: 5px;
+  margin-left: 40px;
+}
+.habitat .viz .legend {
+  margin-right: 10px;
+  float: left;
+  font-size: 10px;
+}
+.habitat .viz .legend span {
+  margin: 10px 3px;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  vertical-align: middle;
+}
 .habitat [data-toggle-node] {
   top: 8px;
 }
