@@ -52,10 +52,11 @@ class HabitatTab extends ReportTab
           break
           
       @$('.scenarioResults').html """
-        The average Marxan score for this zone is <strong>#{data.SCORE}</strong>, placing it in 
+        <a href="http://www.uq.edu.au/marxan/" target="_blank" >Marxan</a> is conservation planning software that provides decision support for a range of conservation planning problems. 
+        In this analysis, the goal is to maximize the amount of habitat conserved. The score for a 100 square meter planning unit is the number of times it is selected in 100 runs, 
+        with higher scores indicating greater conservation value. The average Marxan score for this zone is <strong>#{data.SCORE}</strong>, placing it in 
         the <strong>#{quantile_desc}</strong> quantile range <strong>(#{min_q.replace('Q', '')}% - #{max_q.replace('Q', '')}%)</strong> 
-        for this region. All Marxan planning units for the region have been ranked by sum solution 
-        score and divided into five quantiles of equal proportion.
+        for this region. The graph below shows the distribution of scores for all planning units within this project.
       """
 
       @$('.scenarioDescription').html data.MARX_DESC
