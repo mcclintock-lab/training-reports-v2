@@ -14,13 +14,14 @@ class ArrayFishingValueTab extends ReportTab
   timeout: 240000
 
   render: () ->
+    numTypes = 0
     sanctuaries = @getChildren SANCTUARY_ID
     if sanctuaries.length
       sanctuaryPercent = @recordSet(
         'FishingValue', 
         'FishingValue', 
         SANCTUARY_ID
-      ).float('PERCENT', 0)
+      ).float('PERCENT', 2)
 
 
     moorings = @getChildren MOORING_ID
@@ -40,6 +41,15 @@ class ArrayFishingValueTab extends ReportTab
         NO_NET_ZONES_ID
       ).float('PERCENT', 0)
 
+
+    shippingZones = @getChildren SHIPPING_ZONE_ID
+    if shippingZones.length
+      shippingZonesPercent = @recordSet(
+        'FishingValue', 
+        'FishingValue', 
+        SHIPPING_ZONE_ID
+      ).float('PERCENT', 0)
+
     context =
       sketch: @model.forTemplate()
       sketchClass: @sketchClass.forTemplate()
@@ -47,17 +57,25 @@ class ArrayFishingValueTab extends ReportTab
       admin: @project.isAdmin window.user
       sanctuaryPercent: sanctuaryPercent
       numSanctuaries: sanctuaries.length
-      sanctuaries: sanctuaries.length > 0
-      sancPlural: sanctuaries.length > 1
-      mooringAreaPercent: mooringPercent
-      numMoorings: moorings.length
-      moorings: moorings.length > 0
-      mooringsPlural: moorings.length > 1
+
+      hasSanctuaries: sanctuaries?.length > 0
+      sancPlural: sanctuaries?.length > 1
+
+      mooringsPercent: mooringPercent
+      numMoorings: moorings?.length
+      hasMoorings: moorings?.length > 0
+      mooringsPlural: moorings?.length > 1
 
       noNetZonesPercent: noNetZonesPercent
-      numNoNetZones: noNetZones.length
-      hasNoNetZones: noNetZones.length > 0
-      noNetZonesPlural: noNetZones.length > 1
+      numNoNetZones: noNetZones?.length
+      hasNoNetZones: noNetZones?.length > 0
+      noNetZonesPlural: noNetZones?.length > 1
+
+      shippingZonesPercent: shippingZonesPercent
+      numShippingZones: shippingZones?.length
+      hasShippingZones: shippingZones?.length > 0
+      shippingZonesPlural: shippingZones?.length > 1
+
 
     @$el.html @template.render(context, templates)
     @enableLayerTogglers(@$el)

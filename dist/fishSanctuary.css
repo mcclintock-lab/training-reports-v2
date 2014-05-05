@@ -503,12 +503,12 @@
   left: -8px;
   color: #4d4d4d;
 }
-.overview .tocContainer {
+.habitat .tocContainer {
   padding-left: 20px;
 }
-.overview .tocContainer .expander {
+.habitat .tocContainer .expander {
   display: none !important;
 }
-.overview .tocContainer .tableOfContentsItem[data-type=sketch-collection] .children {
+.habitat .tocContainer .tableOfContentsItem[data-type=sketch-collection] .children {
   display: block !important;
 }

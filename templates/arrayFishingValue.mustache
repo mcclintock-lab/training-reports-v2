@@ -1,57 +1,37 @@
 <div class="reportSection">
   <h4>Displaced Fishing Value</h4>
-  <p class="large">
-    {{#sanctuaries}}
-    {{#aquacultureAreas}}
-    This proposal includes both Sanctuary and Aquaculture areas, displacing
-    <strong>{{sanctuaryPercent}}%</strong> and <strong>{{aquacultureAreaPercent}}%</strong> 
-    of fishing value within Barbuda's waters, respectively.
-    {{/aquacultureAreas}}
-    {{/sanctuaries}}
-    {{#sanctuaries}}
-    {{^aquacultureAreas}}
-    This proposal includes {{numSanctuaries}}
-    {{#sancPlural}}Sanctuaries{{/sancPlural}}{{^sancPlural}}Sanctuary{{/sancPlural}},
-    displacing <strong>{{sanctuaryPercent}}%</strong> of fishing value within 
-    Barbuda's waters based on user reported values of fishing grounds.
-    {{/aquacultureAreas}}
-    {{/sanctuaries}}
-    {{^sanctuaries}}
-    {{#aquacultureAreas}}
-    <br>
-    <br>
-    This proposal includes {{numAquacultureAreas}}
-    Aquaculture Area{{#aquacultureAreasPlural}}s{{/aquacultureAreasPlural}},
-    displacing <strong>{{aquacultureAreaPercent}}%</strong> of fishing value within 
-    Barbuda's waters based on user reported values of fishing grounds.
-    {{/aquacultureAreas}}
-    {{/sanctuaries}}
-    {{#moorings}}
-    <br>
-    <br>
-    {{numMoorings}} Mooring Area{{#mooringsPlural}}s are{{/mooringsPlural}} {{^mooringsPlural}}is{{/mooringsPlural}}
-    also included, which cover{{^mooringsPlural}}s{{/mooringsPlural}} <strong>{{mooringAreaPercent}}%</strong> of 
-    regional fishing value. Mooring areas may displace fishing activities.
-    {{/moorings}}
+    {{#hasSanctuaries}}
+        <p class="large">
+            This proposal includes <strong>{{numSanctuaries}}
+            {{#sancPlural}}Sanctuaries{{/sancPlural}}{{^sancPlural}}Sanctuary{{/sancPlural}}</strong>,
+            displacing <strong>{{sanctuaryPercent}}%</strong> of fishing value within 
+            Barbuda's waters based on user reported values of fishing grounds.
+        </p>
+    {{/hasSanctuaries}}
     {{#hasNoNetZones}}
-    <br>
-    <br>
-    {{numNoNetZones}} Not Net Zone{{#noNetZonesPlural}}s are{{/noNetZonesPlural}} {{^noNetZonesPlural}}is{{/noNetZonesPlural}}
-    also included, which cover{{^noNetZonesPlural}}s{{/noNetZonesPlural}} <strong>{{noNetZonesPercent}}%</strong> of 
-    regional fishing value. No Net Zones may displace fishing activities.
+        <p class="large">
+            This proposal includes <strong>{{numNoNetZones}}
+            {{#noNetZonesPlural}}No-Net Zones{{/noNetZonesPlural}}{{^noNetZonesPlural}}No-Net Zone{{/noNetZonesPlural}}</strong>,
+            displacing <strong>{{noNetZonesPercent}}%</strong> of fishing value within 
+            Barbuda's waters based on user reported values of fishing grounds.
+        </p>
     {{/hasNoNetZones}}
+    {{#hasMoorings}}
+        <p class="large">
+            This proposal includes <strong>{{numMoorings}}
+            Mooring and Anchorage Zone{{#mooringsPlural}}s{{/mooringsPlural}}</strong>,
+            which may potentially displace <strong>{{mooringsPercent}}%</strong> of fishing value within 
+            Barbuda's waters based on user reported values of fishing grounds.
+        </p>
+    {{/hasMoorings}}
+    {{#hasShippingZones}}
+        <p class="large">
+            This proposal includes <strong>{{numShippingZones}}
+            Shipping Zone{{#shippingZonesPlural}}s{{/shippingZonesPlural}}</strong>,
+            which may potentially displace <strong>{{shippingZonesPercent}}%</strong> of fishing value within 
+            Barbuda's waters based on user reported values of fishing grounds.
+        </p>
+    {{/hasShippingZones}}
   </p>
   <a href="#" data-toggle-node="533f16f6a498867c56c6fb57">show fishing values layer</a>
 </div>
-
-{{#fishingAreas}}
-<div class="reportSection">
-  <h4>Priority Fishing Areas</h4>
-  <p class="large">
-    This proposal includes {{numFishingAreas}} Fishing Priority 
-    Area{{#fishingAreaPural}}s{{/fishingAreaPural}}, representing
-    <strong>{{fishingAreaPercent}}%</strong> of the fishing value within Barbuda's 
-    waters based on user reported values of fishing grounds
-  </p>
-</div>
-{{/fishingAreas}}

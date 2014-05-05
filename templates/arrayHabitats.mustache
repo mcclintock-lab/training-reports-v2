@@ -54,7 +54,6 @@
 </div>
 {{/moorings}}
 
-
 {{#hasNoNetZones}}
 <div class="reportSection tableContainer">
   <h4>Habitats within {{numNoNetZones}} No Net Zone{{#noNetZonesPlural}}s{{/noNetZonesPlural}}</h4>
@@ -81,7 +80,7 @@
 </div>
 {{/hasNoNetZones}}
 <div class="reportSection">
-  <h4>Marxan Analysis</h4>
+  <h4>Marxan Analysis <a style="top:0px;" class="marxan-node" href="#" data-toggle-node="533de20aa498867c56c6cba5">Show 'Scenario 1' Marxan Layer</a>&nbsp</h4>
   <select class="chosen" width="400px">
     {{#marxanAnalyses}}
     <option value="{{.}}">Scenario {{.}}</option>

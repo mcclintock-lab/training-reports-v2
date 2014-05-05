@@ -1,5 +1,5 @@
 <div class="reportSection tableContainer">
-  <h4>{{heading}}</h4>
+  <h4>{{heading}} <a href="#" style="top:0px;" data-toggle-node="533ddf86a498867c56c6c830">show habitats layer</a></h4>
   <table>
     <thead>
       <tr>
@@ -15,13 +15,12 @@
   </table>
   <p>
     Percentages shown represent the proportion of habitats available in 
-    Barbuda's entire 3 nautical mile boundary captured within this zone. <br>
-    <a href="#" data-toggle-node="533ddf86a498867c56c6c830">show habitats layer</a>
+    Barbuda's entire 3 nautical mile boundary captured within this zone.
   </p>
 </div>
 <div class="reportSection">
-  <h4>Marxan Analysis</h4>
-  <select class="chosen" width="400px">
+  <h4>Marxan Analysis <a style="top:0px;" class="marxan-node" href="#" data-toggle-node="533de20aa498867c56c6cba5">Show 'Scenario 1' Marxan Layer</a>&nbsp</h4>
+  <select class="chosen" width="380px">
     {{#marxanAnalyses}}
     <option value="{{.}}">Scenario {{.}}</option>
     {{/marxanAnalyses}}

@@ -66,10 +66,36 @@ class ArrayHabitatTab extends ReportTab
       _.defer @renderMarxanAnalysis
     @renderMarxanAnalysis()
 
-
   renderMarxanAnalysis: () =>
     if window.d3
       name = @$('.chosen').val()
+      try
+        #hook up the checkboxes for marxan scenario names
+        nodeMap = {
+            "1":"533de20aa498867c56c6cba5"
+            "2":"533de20aa498867c56c6cba7"
+            "3":"533de20aa498867c56c6cba9"
+            "4":"533de20aa498867c56c6cbab"
+            "5":"533de20aa498867c56c6cbad"
+            "6":"533de20aa498867c56c6cbaf"
+            "7":"533de20aa498867c56c6cbb1"
+            "8":"533de20aa498867c56c6cbb3"
+          }
+        scenarioName = name.substring(0,1)
+        nodeId = nodeMap[scenarioName]
+
+        toc = window.app.getToc()
+        view = toc.getChildViewById(nodeId)
+        node = view.model
+        isVisible = node.get('visible')
+        @$('.marxan-node').attr('data-toggle-node', nodeId)
+        @$('.marxan-node').data('tocItem', view)
+        @$('.marxan-node').attr('checked', isVisible)
+        @$('.marxan-node').attr('data-visible', isVisible)
+        @$('.marxan-node').text('show \'Scenario '+scenarioName+'\' marxan layer')
+      catch e
+        console.log("error", e)
+
       records = @recordSet("MarxanAnalysis", "MarxanAnalysis").toArray()
       quantile_range = {"Q0":"very low", "Q20": "low","Q40": "mid","Q60": "high","Q80": "very high"}
       data = _.find records, (record) -> record.NAME is name

@@ -19,6 +19,8 @@ class FishingValueTab extends ReportTab
 
   render: () ->
     isMooringArea = (@sketchClass.id is MOORING_ID)
+    isShippingArea = (@sketchClass.id is SHIPPING_ZONE_ID)
+    isMooringOrShipping = isMooringArea or isShippingArea
     areaLabel = @sketchClass.attributes.name
     context =
       sketch: @model.forTemplate()
@@ -27,7 +29,7 @@ class FishingValueTab extends ReportTab
       admin: @project.isAdmin window.user
       percent: @recordSet('FishingValue', 'FishingValue').float('PERCENT', 2)
       areaLabel: areaLabel
-      isMooringArea: isMooringArea
+      isMooringOrShipping: isMooringOrShipping
     
     @$el.html @template.render(context, templates)
     @enableLayerTogglers(@$el)

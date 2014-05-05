@@ -31,11 +31,12 @@ class OverviewTab extends ReportTab
     PERCENT = (SQ_MILES / TOTAL_AREA) * 100.0
     if MIN_DIAM > RECOMMENDED_DIAMETER.min
       DIAM_OK = true
-    
+
     skid = @model.getAttribute('SC_ID')
     isNoNetZone = (@sketchClass.id is NO_NET_ZONES_ID)
     isMooringArea = (@sketchClass.id is MOORING_ID)
-    renderMinimumWidth = (!isNoNetZone and !isMooringArea)
+    isShippingZone = (@sketchClass.id is SHIPPING_ZONE_ID)
+    renderMinimumWidth = (!isNoNetZone and !isMooringArea and !isShippingZone)
     context =
       sketch: @model.forTemplate()
       sketchClass: @sketchClass.forTemplate()
