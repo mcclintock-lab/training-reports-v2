@@ -17,6 +17,8 @@ class ArrayHabitatTab extends ReportTab
   render: () ->
 
     data = @recordSet('MarxanAnalysis', 'MarxanAnalysis').toArray()
+    console.log("data is ", data)
+    console.log("and sketch class is ", @sketchClass)
     sanctuaries = @getChildren SANCTUARY_ID
     if sanctuaries.length
       sanctuary = @recordSet('BarbudaHabitat', 'Habitats', SANCTUARY_ID)
@@ -97,8 +99,13 @@ class ArrayHabitatTab extends ReportTab
         console.log("error", e)
 
       records = @recordSet("MarxanAnalysis", "MarxanAnalysis").toArray()
+      #console.log("records are ", records)
+      console.log("sketch class is ", @sketchClass.id)
       quantile_range = {"Q0":"very low", "Q20": "low","Q40": "mid","Q60": "high","Q80": "very high"}
       data = _.find records, (record) -> record.NAME is name
+      for rec in records
+         console.log("proposal: ", rec.PROPOSAL)
+      #  console.log("rec scores:    ",rec.SCORE)
       histo = data.HISTO.slice(1, data.HISTO.length - 1).split(/\s/)
       histo = _.filter histo, (s) -> s.length > 0
       histo = _.map histo, (val) ->

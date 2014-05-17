@@ -67,6 +67,7 @@ class HabitatTab extends ReportTab
       records = @recordSet("MarxanAnalysis", "MarxanAnalysis").toArray()
       quantile_range = {"Q0":"very low", "Q20": "low","Q40": "mid","Q60": "high","Q80": "very high"}
       data = _.find records, (record) -> record.NAME is name
+
       histo = data.HISTO.slice(1, data.HISTO.length - 1).split(/\s/)
       histo = _.filter histo, (s) -> s.length > 0
       histo = _.map histo, (val) ->
@@ -173,6 +174,7 @@ class HabitatTab extends ReportTab
             q = _.find quantiles, (q) ->
               i >= q.start and i <= q.end
             q?.bg or "steelblue"
+
 
       svg.selectAll(".score")
           .data([Math.round(data.SCORE)])
