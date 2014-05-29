@@ -89,7 +89,6 @@ class ArrayHabitatTab extends ReportTab
         scenarioName = name.substring(0,1)
         nodeId = nodeMap[scenarioName]
 
-
         toc = window.app.getToc()
         view = toc.getChildViewById(nodeId)
         node = view.model
