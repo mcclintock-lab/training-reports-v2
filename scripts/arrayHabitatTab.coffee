@@ -17,8 +17,11 @@ class ArrayHabitatTab extends ReportTab
   render: () ->
 
     data = @recordSet('MarxanAnalysis', 'MarxanAnalysis').toArray()
-    console.log("data is ", data)
-    console.log("and sketch class is ", @sketchClass)
+    #returnMsg = @recordSet('MarxanAnalysis', 'ResultMsg').data['value']
+    #console.log("return msg is : ", returnMsg)
+    #console.log("data is ", data)
+    #console.log("and sketch class is ", @sketchClass)
+    #console.log("-----------------------------")
     sanctuaries = @getChildren SANCTUARY_ID
     if sanctuaries.length
       sanctuary = @recordSet('BarbudaHabitat', 'Habitats', SANCTUARY_ID)
@@ -99,13 +102,14 @@ class ArrayHabitatTab extends ReportTab
         console.log("error", e)
 
       records = @recordSet("MarxanAnalysis", "MarxanAnalysis").toArray()
-      #console.log("records are ", records)
-      console.log("sketch class is ", @sketchClass.id)
       quantile_range = {"Q0":"very low", "Q20": "low","Q40": "mid","Q60": "high","Q80": "very high"}
       data = _.find records, (record) -> record.NAME is name
+
+      scores_data = []
       for rec in records
-         console.log("proposal: ", rec.PROPOSAL)
-      #  console.log("rec scores:    ",rec.SCORE)
+         if rec.NAME == name
+          scores_data.push(rec)
+      
       histo = data.HISTO.slice(1, data.HISTO.length - 1).split(/\s/)
       histo = _.filter histo, (s) -> s.length > 0
       histo = _.map histo, (val) ->
@@ -158,14 +162,14 @@ class ArrayHabitatTab extends ReportTab
         bottom: 30
         left: 45
       width = 400 - margin.left - margin.right
-      height = 300 - margin.top - margin.bottom
-      
+      height = 350 - margin.top - margin.bottom
+
       x = d3.scale.linear()
         .domain([0, 100])
         .range([0, width])
       y = d3.scale.linear()
         .range([height, 0])
-        .domain([0, d3.max(histo)])
+        .domain([0, d3.max(histo)+50])
 
       xAxis = d3.svg.axis()
         .scale(x)
@@ -213,21 +217,61 @@ class ArrayHabitatTab extends ReportTab
               i >= q.start and i <= q.end
             q?.bg or "steelblue"
 
-      svg.selectAll(".score")
-          .data([Math.round(data.SCORE)])
-        .enter().append("text")
-        .attr("class", "score")
-        .attr("x", (d) -> (x(d) - 8 )+ 'px')
-        .attr("y", (d) -> (y(histo[d]) - 10) + 'px')
-        .text("▼")
+      #sort the overlapping scores into a map of scores->array of proposal ids
+      score_map  = []
+      for sdata in scores_data
+        curr_score = Math.round(sdata.SCORE)
+        curr_proposal = sdata.PROPOSAL
+        scores = Object.keys(score_map)
+        if curr_score.toString() in scores
+          prop_ids = score_map[curr_score]
+          prop_ids.push(curr_proposal)
+          score_map[curr_score] = prop_ids
+        else
+          score_map[curr_score] = [curr_proposal]
 
-      svg.selectAll(".scoreText")
-          .data([Math.round(data.SCORE)])
-        .enter().append("text")
-        .attr("class", "scoreText")
-        .attr("x", (d) -> (x(d) - 6 )+ 'px')
-        .attr("y", (d) -> (y(histo[d]) - 30) + 'px')
-        .text((d) -> d)
+      for sdata, proposals of score_map
+        svg.selectAll(".score"+sdata)
+            .data([sdata])
+          .enter().append("text")
+          .attr("class", "score")
+          .attr("x", (d) -> (x(d) - 8 )+ 'px')
+          .attr("y", (d) -> (y(histo[d]) - 1) + 'px')
+          .text("▼")
+
+      for sdata, proposals of score_map
+        if proposals.length == 1
+          pname = window.app.sketches.get(proposals[0]).attributes.name
+          svg.selectAll(".scoreText"+sdata)
+              .data([sdata])
+            .enter().append("text")
+            .attr("class", "scoreText")
+            .attr("x", (d) -> (x(d) - 6 )+ 'px')
+            .attr("y", (d) -> (y(histo[d]) - 18) + 'px')
+            .text((d) -> d+": "+pname)
+        else
+          yoffset = -18
+          for p in proposals
+            pname = window.app.sketches.get(p).attributes.name
+            if yoffset == -18
+              #first one, so insert the text score
+              svg.selectAll(".scoreText"+sdata+p)
+                  .data([sdata])
+                .enter().append("text")
+                .attr("class", "scoreText")
+                .attr("x", (d) -> (x(d) - 6 )+ 'px')
+                .attr("y", (d) -> (y(histo[d]) + yoffset) + 'px')
+                .text((d) -> "Proposals with score "+d+":")
+            yoffset+=12
+            svg.selectAll(".scoreText"+p)
+                .data([sdata])
+              .enter().append("text")
+              .attr("class", "scoreText")
+              .attr("x", (d) -> (x(d) + 10 )+ 'px')
+              .attr("y", (d) -> (y(histo[d]) + yoffset) + 'px')
+              .text((d) -> pname)
+            yoffset+=1
+
 
       @$('.viz').append '<div class="legends"></div>'
       for quantile in quantiles

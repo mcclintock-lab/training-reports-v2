@@ -19,6 +19,7 @@ class ArrayTradeoffsTab extends ReportTab
   render: () ->
       
     tradeoff_data = @recordSet('TradeoffsPropId', 'TradeoffsPropId').toArray()
+    console.log("tradeoff data: ", tradeoff_data)
     context =
       sketch: @model.forTemplate()
       sketchClass: @sketchClass.forTemplate()
