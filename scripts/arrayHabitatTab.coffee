@@ -15,13 +15,7 @@ class ArrayHabitatTab extends ReportTab
   timeout: 240000
   
   render: () ->
-
     data = @recordSet('MarxanAnalysis', 'MarxanAnalysis').toArray()
-    #returnMsg = @recordSet('MarxanAnalysis', 'ResultMsg').data['value']
-    #console.log("return msg is : ", returnMsg)
-    #console.log("data is ", data)
-    #console.log("and sketch class is ", @sketchClass)
-    #console.log("-----------------------------")
     sanctuaries = @getChildren SANCTUARY_ID
     if sanctuaries.length
       sanctuary = @recordSet('BarbudaHabitat', 'Habitats', SANCTUARY_ID)
@@ -69,11 +63,32 @@ class ArrayHabitatTab extends ReportTab
     @$('.chosen').chosen({disable_search_threshold: 10, width:'400px'})
     @$('.chosen').change () =>
       _.defer @renderMarxanAnalysis
-    @renderMarxanAnalysis()
 
+    tooltip = d3.select("body")
+      .append("div")
+      .attr("class", "chart-tooltip")
+      .attr("id", "chart-tooltip")
+      .text("data")
+
+    @renderMarxanAnalysis(tooltip)
+
+
+
+
+  calc_ttip = (xloc, data, tooltip) ->
+    tdiv = tooltip[0][0].getBoundingClientRect()
+    tleft = tdiv.left
+    tw = tdiv.width
+    return xloc-(tw+10) if (xloc+tw > tleft+tw)
+    return xloc+10
+    
   renderMarxanAnalysis: () =>
+    tooltip = d3.select('.chart-tooltip')
     if window.d3
+      pointSelect = null
+      labelSelect = null
       name = @$('.chosen').val()
+
       try
         #hook up the checkboxes for marxan scenario names
         nodeMap = {
@@ -217,6 +232,7 @@ class ArrayHabitatTab extends ReportTab
               i >= q.start and i <= q.end
             q?.bg or "steelblue"
 
+
       #sort the overlapping scores into a map of scores->array of proposal ids
       score_map  = []
       for sdata in scores_data
@@ -238,40 +254,28 @@ class ArrayHabitatTab extends ReportTab
           .attr("x", (d) -> (x(d) - 8 )+ 'px')
           .attr("y", (d) -> (y(histo[d]) - 1) + 'px')
           .text("▼")
+          .style('cursor', 'pointer')
+          .on("mouseover", (d) -> show_tooltip(tooltip, d, score_map))
+          .on("mouseout", (d) -> hide_tooltip(tooltip))
+          .on("mousemove", (d) -> tooltip.style("top", (event.pageY-10)+"px").style("left",(calc_ttip(event.pageX, d, tooltip))+"px"))  
 
       for sdata, proposals of score_map
-        if proposals.length == 1
-          pname = window.app.sketches.get(proposals[0]).attributes.name
-          svg.selectAll(".scoreText"+sdata)
-              .data([sdata])
-            .enter().append("text")
-            .attr("class", "scoreText")
-            .attr("x", (d) -> (x(d) - 6 )+ 'px')
-            .attr("y", (d) -> (y(histo[d]) - 18) + 'px')
-            .text((d) -> d+": "+pname)
-        else
-          yoffset = -18
-          for p in proposals
-            pname = window.app.sketches.get(p).attributes.name
-            if yoffset == -18
-              #first one, so insert the text score
-              svg.selectAll(".scoreText"+sdata+p)
-                  .data([sdata])
-                .enter().append("text")
-                .attr("class", "scoreText")
-                .attr("x", (d) -> (x(d) - 6 )+ 'px')
-                .attr("y", (d) -> (y(histo[d]) + yoffset) + 'px')
-                .text((d) -> "Proposals with score "+d+":")
-            yoffset+=12
-            svg.selectAll(".scoreText"+p)
-                .data([sdata])
-              .enter().append("text")
-              .attr("class", "scoreText")
-              .attr("x", (d) -> (x(d) + 10 )+ 'px')
-              .attr("y", (d) -> (y(histo[d]) + yoffset) + 'px')
-              .text((d) -> pname)
-            yoffset+=1
-
+        svg.selectAll('.scoreText'+sdata)
+            .data([sdata])
+          .enter().append("text")
+          .attr("class", "scoreText")
+          .attr("x", (d) -> (x(d) - 6 )+ 'px')
+          .attr("y", (d) -> (y(histo[d]) - 18) + 'px')
+          .attr("id", (d) -> "s"+d)
+          .style("font-size", '12px')
+          .style('cursor', 'pointer')
+          .on("mouseover", (d) -> show_tooltip(tooltip, d, score_map))
+          .on("mouseout", (d) -> hide_tooltip(tooltip))
+          .on("mousemove", (d) -> tooltip.style("top", (event.pageY-10)+"px").style("left",(calc_ttip(event.pageX, d, tooltip))+"px"))          
+          .text( (d, props) -> 
+            return proposals.length+" Proposals" if (proposals.length > 1)
+            return window.app.sketches.get(proposals[0]).attributes.name
+          )
 
       @$('.viz').append '<div class="legends"></div>'
       for quantile in quantiles
@@ -279,4 +283,31 @@ class ArrayHabitatTab extends ReportTab
           <div class="legend"><span style="background-color:#{quantile.bg};">&nbsp;</span>#{quantile.range}</div>
         """
       @$('.viz').append '<br style="clear:both;">'
+
+
+    show_tooltip = (tooltip, data, score_map) ->
+      tooltip.style("visibility", "visible").html(get_proposal_html(data, score_map[data]))
+      return
+
+    get_proposal_html = (data, proposals) ->
+      if proposals.length == 1
+        return "<b>"+window.app.sketches.get(proposals[0]).attributes.name+"</b> has a score of <b>"+data+"</b>"
+      else
+        msg = "The following proposals have a score of <b>"+data+"</b>:<ul>"
+        for p in proposals
+          msg+="<li><b>"+window.app.sketches.get(p).attributes.name+"</b></li>"
+        msg+="</ul>"
+        return msg
+
+    hide_tooltip = (tooltip) ->
+      tooltip.style("visibility", "hidden")
+      return
+
+    calc_ttip = (xloc, data, tooltip) ->
+      tdiv = tooltip[0][0].getBoundingClientRect()
+      tleft = tdiv.left
+      tw = tdiv.width
+      return xloc-(tw+10) if (xloc+tw > tleft+tw)
+      return xloc+10
+
 module.exports = ArrayHabitatTab

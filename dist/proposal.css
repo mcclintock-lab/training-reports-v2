@@ -378,7 +378,7 @@
 }
 .habitat .viz div.score {
   position: absolute;
-  background-color: green;
+  color: blue;
 }
 .habitat .viz div.score:before {
   content: '▼';
@@ -386,10 +386,6 @@
   top: -17px;
   font-size: 18px;
   position: relative;
-}
-.habitat .viz text.scoreText {
-  font-size: 12px;
-  opacity: 1.0;
 }
 .habitat .viz svg {
   font: 10px sans-serif;
