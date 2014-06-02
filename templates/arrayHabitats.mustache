@@ -86,7 +86,13 @@
     <option value="{{.}}">Scenario {{.}}</option>
     {{/marxanAnalyses}}
   </select>
-  <p class="scenarioResults"></p>
+  <p class="scenarioResults"><a href="http://www.uq.edu.au/marxan/" target="_blank" >Marxan</a> is conservation planning software that provides decision support for a range of conservation planning problems. In this analysis, the goal is to maximize the amount of habitat conserved. The score for a 200 square meter planning unit is the number of times it is selected in 100 runs, with higher scores indicating greater conservation value. The graph below shows the distribution of scores for all planning units within this project.</p>
+  <p class="small ttip-tip">
+     Tip: hover over a proposal to see details
+  </p>  
   <div class="viz"></div>
-  <p class="scenarioDescription"></p>
+  <div style="padding-top:15px;"><table class="proposalResults"></table></div>
+  </br><div style="padding:0px 5px 5px 5px;"><strong>Scenario Description</strong>
+    <div class="scenarioDescription"></div>
+  </div>
 </div>

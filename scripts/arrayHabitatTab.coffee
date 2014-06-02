@@ -121,9 +121,13 @@ class ArrayHabitatTab extends ReportTab
       data = _.find records, (record) -> record.NAME is name
 
       scores_data = []
+      proposals_data = []
       for rec in records
          if rec.NAME == name
           scores_data.push(rec)
+          proposals_data.push(rec)
+
+      _.sortBy proposals_data, (r) -> window.app.sketches.get(r.SC_ID).attributes.name
       
       histo = data.HISTO.slice(1, data.HISTO.length - 1).split(/\s/)
       histo = _.filter histo, (s) -> s.length > 0
@@ -137,13 +141,12 @@ class ArrayHabitatTab extends ReportTab
           quantile_desc = quantile_range[min_q]
           break
           
-      @$('.scenarioResults').html """
-        <a href="http://www.uq.edu.au/marxan/" target="_blank" >Marxan</a> is conservation planning software that provides decision support for a range of conservation planning problems. 
-        In this analysis, the goal is to maximize the amount of habitat conserved. The score for a 200 square meter planning unit is the number of times it is selected in 100 runs, 
-        with higher scores indicating greater conservation value. The average Marxan score for this collection is <strong>#{data.SCORE}</strong>, placing it in 
-        the <strong>#{quantile_desc}</strong> quantile range <strong>(#{min_q.replace('Q', '')}% - #{max_q.replace('Q', '')}%)</strong> 
-        for this region. The graph below shows the distribution of scores for all planning units within this project.
-      """
+      scores_table = "<table><thead><tr><th>Proposal</th><th>Score</th><th>Quantile</th><th>Quantile %</tr></thead><tbody>"
+      for rec in proposals_data
+        rec_name = window.app.sketches.get(rec.SC_ID).attributes.name
+        rec_score = rec.SCORE
+        scores_table+="<tr><td>#{rec_name}</td><td>#{rec_score}</td><td>#{quantile_desc}</td><td>#{min_q.replace('Q', '')}%-#{max_q.replace('Q', '')}%</td></tr></tbody><table>"
+      @$('.proposalResults').html scores_table
 
       @$('.scenarioDescription').html data.MARX_DESC
 
